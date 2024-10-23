@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload an Audio File</title>
+    <style>
+        * {
+            margin: 10;
+            padding: 10;
+        }
+        body {
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background: white;
+        }
+        nav {
+            width: 100%;
+            background: #be8686;
+            height: 50px;
+            color: #f2d2d2;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px; /* Space between form and result */
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            width: 80%;
+            background-color: #f9f9f9; /* Light background for the result */
+            white-space: pre-wrap; /* To preserve formatting in case of multiline text */
+        }
+        @media (max-width: 800px) {
+            form {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </nav>
+    <h1>Upload an Audio File</h1>
+    <form method="post" enctype="multipart/form-data" id="uploadForm">
+        <input type="file" name="file" required>
+        <input type="text" name="language" placeholder="Language" required>
+        <input type="submit" value="Upload">
+    </form>
+    <div id="result"></div> <!-- Div to display the result -->
+
+    <script>
+        document.getElementById('uploadForm').onsubmit = async function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            const formData = new FormData(this); // Gather form data
+            const response = await fetch('/', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json(); // Parse the JSON response
+            
+            // Display the translated text in the result div
+            document.getElementById('result').innerText = result.translated_text;
+        };
+    </script>
+</body>
+</html>
